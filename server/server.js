@@ -39,7 +39,7 @@ middleware.forEach((it) => server.use(it))
 
 const urlData = `${__dirname}/data/data.json`
 
-server.get('/api/v1/goods', async (req, res) => {
+server.get('/api/v1/items', async (req, res) => {
   const data = await readFile(urlData, { encoding: 'utf8' })
     .then((text) => JSON.parse(text))
     .catch((err) => err)

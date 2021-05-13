@@ -1,16 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { getItemsFromServer } from '../redux/reducers/items'
+
 import Head from './head'
 import Header from './header'
+import ItemCard from './item-card'
 
 const Main = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getItemsFromServer())
+  }, [])
+
+  // const getListOfItems = useSelector((store) => {
+
+  // })
+
   return (
     <div>
       <Head title="Main" />
       <Header />
       <div className="flex items-center justify-center h-screen">
-        <div className="bg-indigo-800 hover:text-red-500 text-white font-bold rounded-lg border shadow-lg p-10">
-          This is Main component
-        </div>
+        <ItemCard />
       </div>
     </div>
   )
