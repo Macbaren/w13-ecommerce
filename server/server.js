@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express'
 import path from 'path'
 import cors from 'cors'
@@ -8,6 +9,8 @@ import React from 'react'
 import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
+
+const { readFile } = require('fs').promises
 
 require('colors')
 
@@ -33,6 +36,16 @@ const middleware = [
 ]
 
 middleware.forEach((it) => server.use(it))
+
+const urlData = `${__dirname}/data/data.json`
+
+server.get('/api/v1/goods', async (req, res) => {
+  const data = await readFile(urlData, { encoding: 'utf8' })
+    .then((text) => JSON.parse(text))
+    .catch((err) => err)
+  const result = data.filter((_, ind) => ind < 31)
+  res.json(result)
+})
 
 server.use('/api/', (req, res) => {
   res.status(404)
