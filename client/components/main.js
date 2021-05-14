@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { getItemsFromServer } from '../redux/reducers/items'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { getItemsFromServer, getRatesFromServer } from '../redux/reducers/items'
 
 import Head from './head'
 import Header from './header'
@@ -11,18 +12,25 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(getItemsFromServer())
+    dispatch(getRatesFromServer())
   }, [])
 
-  // const getListOfItems = useSelector((store) => {
-
-  // })
+  const getListOfItems = useSelector((store) => {
+    return store.items.listOfItems
+  })
 
   return (
-    <div>
+    <div className="h-full">
       <Head title="Main" />
       <Header />
-      <div className="flex items-center justify-center h-screen">
-        <ItemCard />
+      <div className="flex flex-wrap h-screen">
+        {getListOfItems.map((item) => {
+          return (
+            <div key={item.id}>
+              <ItemCard item={item} />
+            </div>
+          )
+        })}
       </div>
     </div>
   )

@@ -1,20 +1,20 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
-const ItemCard = () => {
+const ItemCard = (props) => {
+  const currency = useSelector((store) => store.items.currency)
+  const rate = useSelector((store) => store.items.listOfRates)
+
   return (
-    <div className="backdrop w-10/12 md:w-1/4 bg-white bg-opacity-10 rounded p-3 text-blue border border-white shadow-lg">
+    <div className="backdrop w-10/12 md:w-1/8 bg-white bg-opacity-10 rounded text-blue border border-white shadow-lg">
       <div className="w-full mb-3 pb-3 border-b border-1 border-white">
-        <h3 className="card__title text-xl font-semibold text-shadow">Item Name</h3>
+        <h3 className="card__title text-xl font-semibold text-shadow">{props.item.title}</h3>
       </div>
       <div>
-        <img
-          src="https://i.postimg.cc/VNYLzb8w/bg03.jpg"
-          alt="image3"
-          className="w-full h-48 object-cover mb-2"
-        />
+        <img src={props.item.image} alt="image3" className="w-full h-48 object-cover mb-2" />
         <div className="mb-3 tracking-wide text-base text-shadow">
-          <div className="card__price">price</div>
-          <div className="currency">currency</div>
+          <div className="card__price">price: {(props.item.price * rate[currency]).toFixed(2)}</div>
+          <div className="currency">{currency}</div>
           <div className="card__product-amount">amount</div>
         </div>
         <button
