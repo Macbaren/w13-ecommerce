@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-console */
 import express from 'express'
 import path from 'path'
@@ -45,6 +46,28 @@ server.get('/api/v1/items', async (req, res) => {
     .then((text) => JSON.parse(text))
     .catch((err) => err)
   const result = data.filter((_, ind) => ind < 31)
+  res.json(result)
+})
+
+server.get('/api/v1/items/:type/:direction', async (req, res) => {
+  const { type, direction } = req.params
+  const data = await readFile(urlData, { encoding: 'utf8' })
+    .then((text) => JSON.parse(text))
+    .catch((err) => err)
+
+  const result = data
+    .sort((a, b) => {
+      return type === 'price' && direction === '0-9'
+        ? a.price - b.price
+        : type === 'price' && direction === '9-0'
+        ? b.price - a.price
+        : type === 'title' && direction === 'a-z'
+        ? a.title.localeCompare(b.title)
+        : type === 'title' && direction === 'z-a'
+        ? b.title.localeCompare(a.title)
+        : data
+    })
+    .filter((_, ind) => ind < 31)
   res.json(result)
 })
 

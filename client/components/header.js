@@ -1,12 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { history } from '../redux'
-import { setCurrency } from '../redux/reducers/items'
+import { setCurrency, sortItems } from '../redux/reducers/items'
 
 const Header = () => {
   const dispatch = useDispatch()
   const onClick = (e) => dispatch(setCurrency(e.target.textContent))
+
+  const [priсeDirection, setPriceDirection] = useState(true)
+  const [titleDirection, setTitleDirection] = useState(true)
+
+  const getPriceDirection = (priсeDir) => {
+    const currDir = priсeDir ? '0-9' : '9-0'
+    setPriceDirection(!priсeDirection)
+    return currDir
+  }
+
+  const getTitleDirection = (titleDir) => {
+    const currDir = titleDir ? 'a-z' : 'z-a'
+    setTitleDirection(!titleDirection)
+    return currDir
+  }
+
   return (
     <nav className="flex flex-col justify-center bg-green-800 text-white font-bold h-20 w-screen select-none">
       <Link to="/">
@@ -39,10 +55,20 @@ const Header = () => {
           </button>
         </div>
         <div>
-          <button type="button" id="sort-price" className="border p-1 hover:text-red-500">
+          <button
+            type="button"
+            id="sort-price"
+            className="border p-1 hover:text-red-500"
+            onClick={() => dispatch(sortItems('price', getPriceDirection(priсeDirection)))}
+          >
             Sort by price
           </button>
-          <button type="button" id="sort-name" className="border p-1 hover:text-red-500">
+          <button
+            type="button"
+            id="sort-name"
+            className="border p-1 hover:text-red-500"
+            onClick={() => dispatch(sortItems('title', getTitleDirection(titleDirection)))}
+          >
             Sort by name
           </button>
         </div>
